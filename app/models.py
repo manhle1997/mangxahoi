@@ -1,6 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db.models.signals import post_save
+
+
+# class User(AbstractUser):
+#     friends = models.ManyToManyField('self')
 
 
 
@@ -14,6 +18,7 @@ class UserProfile(models.Model):
     website = models.URLField(default='')
     phone = models.IntegerField(default=0)
     image = models.ImageField(upload_to='static/images', blank=True, default='1.png')
+
 
     def __str__(self):
         return self.user.username

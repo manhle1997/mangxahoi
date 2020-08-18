@@ -5,13 +5,15 @@ from home.models import Post, Friend, Comment
 from django.contrib.auth.models import User
 from django.views import generic
 import random
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 class HomeView(TemplateView):
     template_name = 'home/home.html'
 
-
-
     def get(self, request):
+
+
 
         # try:
         #     friend = Friend.objects.get(current_user=request.user)
@@ -35,9 +37,12 @@ class HomeView(TemplateView):
 
         # c = Comment.objects.count(post = )
         # user_post = [users, friends]
-        posts = Post.objects.filter(user__id__in=[request.user.id])
-        # posts = Post.objects.all()
-        print(request)
+        #posts = Post.objects.filter(Q(user__id__in=[request.user.id])|Q(user__id__in=[request.user.id]))
+        posts = Post.objects.all()
+        print(request.user.id)
+        pageSize = 5
+        keyword = request.GET.get('keyword', '')
+        page = int(request.GET.get('page', 1))
 
         #Lấy ra tất cả bản ghi của đối tượng friend
         context = {'form': form, 'posts': posts, 'users': users, 'friends': friends}
@@ -45,6 +50,8 @@ class HomeView(TemplateView):
 
 
     def post(self, request):
+
+
         form = HomeForm(request.POST)
 
         if form.is_valid():
